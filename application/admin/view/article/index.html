@@ -1,0 +1,96 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+<!--{if auth("$classuri/add")}-->
+<button data-open='{:url("$classuri/add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加文章</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/del")}-->
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}' class='layui-btn layui-btn-sm layui-btn-primary'>删除文章</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    <!--{empty name='list'}-->
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    <!--{else}-->
+    <input type="hidden" value="resort" name="action">
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='text-left nowrap'>ID</th>
+            <th class='text-left nowrap'>排序</th>
+            <!-- <th class='text-left nowrap'>展示图片</th> -->
+            <th class='text-left nowrap'>标题</th>
+            <th class='text-left nowrap'>添加时间</th>
+            <th class='text-left nowrap'>浏览次数</th>
+            <th class='text-left nowrap'>状态</th>
+            <th class='text-left nowrap'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{foreach $list as $key=>$vo}-->
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.id}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.sort}
+            </td>
+            <!-- </td class='text-left nowrap'>
+                <img src="{$vo.image_id}"/>
+            </td> -->
+            <td class='text-left nowrap'>
+                {$vo.title}
+            </td>
+            
+            <td class='text-left nowrap'>
+                {$vo.timestamp}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.read_number}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.delete}
+            </td>
+            <td class='text-left nowrap'>
+
+                {if auth("$classuri/edit")}
+                <span class="text-explode">|</span>
+                <a data-title="编辑用户" data-open='{:url("$classuri/edit")}?id={$vo.id}'>编辑</a>
+                {/if}
+
+                {if $vo.status eq 1 and auth("$classuri/forbid")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='2' data-action='{:url("$classuri/forbid")}'>停用</a>
+                {elseif auth("$classuri/resume")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/resume")}'>正常</a>
+                {/if}
+
+                {if $vo.delete eq 1 and auth("$classuri/del")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/recovery")}'>启用</a>
+                {elseif auth("$classuri/resume")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                {/if}
+
+            </td>
+        </tr>
+        <!--{/foreach}--> 
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    <!--{/empty}-->
+</form>
+{/block}

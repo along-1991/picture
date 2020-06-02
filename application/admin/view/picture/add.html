@@ -1,0 +1,25 @@
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" autofocus name="title" value='{$vo.title|default=""}' title="标题" placeholder="请输入标题" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">上传图片</label>
+        <div class="layui-input-block">
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{$vo.url|default=""}"/>
+            <!-- <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{$vo.url|default=""}"/> -->
+            <input name='url' value="{$vo.url|default=""}"`>
+            <button type='button' data-file='one' data-field='url' data-type='jpg,png,gif'>上传文件</button>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+    <script>window.form.render();</script>
+</form>
